@@ -1,3 +1,7 @@
 #!/bin/bash
 
-cd /root/www/kotlin/desk && make build
+set -eof
+
+yes | sdkmanager --licenses
+
+cd /root/www/kotlin/desk && ./gradlew assemble
