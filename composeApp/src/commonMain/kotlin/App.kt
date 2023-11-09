@@ -1,3 +1,4 @@
+import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -26,6 +28,36 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 fun App() {
     var inputExpression by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+    val context = LocalContext.current
+    val packages = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+    val backgroundColour = Color(1.0f, 1.0f, 1.0f, 0.6f)
+    val boxStyles =
+            Modifier.padding(20.dp)
+                    .background(color = backgroundColour, shape = RoundedCornerShape(16.dp))
+
+    val pm = context.packageManager
+    val resources = pm.getResourcesForApplication(resolveInfo.activityInfo.applicationInfo)
+    //    val appName =
+    //            if (resolveInfo.activityInfo.labelRes != 0) {
+    //                // getting proper label from resources
+    //                resources.getString(resolveInfo.activityInfo.labelRes)
+    //            } else {
+    //                // getting it out of app info - equivalent to
+    //                // context.packageManager.getApplicationInfo
+    //                resolveInfo.activityInfo.applicationInfo.loadLabel(pm).toString()
+    //            }
+    //    val packageName = resolveInfo.activityInfo.packageName
+    //    val iconDrawable = resovleInfo.activityInfo.loadIcon(pm)
+    val pm = context.packageManager
+    val mainIntent = Intent(Intent.ACTION_MAIN, null)
+    mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+
+    val resolvedInfos =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pm.queryIntentActivities(mainIntent, PackageManager.ResolveInfoFlags.of(0L))
+            } else {
+                pm.queryIntentActivities(mainIntent, 0)
+            }
 
     MaterialTheme {
         Column(
@@ -33,14 +65,16 @@ fun App() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(Modifier.background(color = Color.White, shape = RoundedCornerShape(16.dp))) {
-                TextField(
-                        value = inputExpression,
-                        onValueChange = { inputExpression = it },
-                        label = { Text("Enter expression") },
-                        maxLines = 1,
-                        modifier = Modifier.padding(20.dp).focusRequester(focusRequester)
-                )
+            Box(boxStyles) {
+                Box(boxStyles) {
+                    TextField(
+                            value = inputExpression,
+                            onValueChange = { inputExpression = it },
+                            label = { Text("Enter expression") },
+                            maxLines = 1,
+                            modifier = Modifier.padding(20.dp).focusRequester(focusRequester)
+                    )
+                }
             }
         }
     }
