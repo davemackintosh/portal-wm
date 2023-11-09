@@ -1,0 +1,6 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+$ANDROID_SDK_ROOT/tools/bin/sdkmanager \
+     --sdk_root=$ANDROID_SDK_ROOT "$@"
+
+# vim: ft=bash
