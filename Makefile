@@ -10,4 +10,4 @@ termux-deps:
 build:
 	${UBUNTU} -- /root/www/kotlin/desk/build-in-proot.sh
 	cp ./${APP_NAME}/build/outputs/apk/debug/${APP_NAME}-debug.apk ~/storage/shared/Download/
-	termux-open ~/storage/shared/Download/${APP_NAME}-debug.apk
+	# termux-open ~/storage/shared/Download/${APP_NAME}-debug.apk
