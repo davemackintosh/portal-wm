@@ -4,10 +4,10 @@ APP_NAME:=composeApp
 .PHONY: termux-deps
 termux-deps:
 	wget https://github.com/Lzhiyong/termux-ndk/releases/download/android-sdk/android-sdk-aarch64.zip
-	unzip android-sdk-aarch64.zip -d $PREFIX/share
-	@echo "Android SDK installed to $PREFIX/share/android-sdk"
+	unzip android-sdk-aarch64.zip -d $$PREFIX/share
+	@echo "Android SDK installed to $$PREFIX/share/android-sdk"
 	direnv allow
-	rm -f android-sdk-aarch64.zip
+	rm -f android-sdk-aarch64.zip*
 
 .PHONY: termux-ubuntu-deps
 termux-ubuntu-deps:
