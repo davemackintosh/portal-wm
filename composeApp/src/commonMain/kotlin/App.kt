@@ -3,6 +3,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.os.Build
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,7 @@ fun App() {
     var inputExpression by remember { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
     val context = LocalContext.current
-    val backgroundColour = Color(1.0f, 1.0f, 1.0f, 0.6f)
+    val backgroundColour = Color(0.0f, 0.0f, 0.0f, 0.6f)
     val boxStyles =
         Modifier
             .padding(16.dp)
@@ -46,13 +47,20 @@ fun App() {
     val pm = context.packageManager
     val intent = Intent(Intent.ACTION_MAIN, null)
     intent.addCategory(Intent.CATEGORY_LAUNCHER)
-    val appList: List<ResolveInfo> = pm.queryIntentActivities(
-        intent,
-        0
-    )
+    val appList: List<ResolveInfo> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.packageManager.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+        )
+    } else {
+        context.packageManager.queryIntentActivities(
+            Intent(Intent.ACTION_MAIN, null).addCategory(Intent.CATEGORY_LAUNCHER),
+            PackageManager.GET_META_DATA
+        )
+    }
     val apps = appList.map { app -> ExpressionResult(
         app.loadLabel(pm).toString(),
-        app.icon,
+        app.activityInfo.applicationInfo.loadIcon(pm),
         null
 
     )}
@@ -64,7 +72,6 @@ fun App() {
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(boxStyles) {
-                Box(boxStyles) {
                     TextField(
                             value = inputExpression,
                             onValueChange = { inputExpression = it },
@@ -74,10 +81,9 @@ fun App() {
                                 .padding(20.dp)
                                 .focusRequester(focusRequester)
                     )
-                }
+                ExpressionResultsList(results = apps)
             }
         }
-        ExpressionResultsList(results = apps)
     }
 }
 

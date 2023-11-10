@@ -2,6 +2,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +27,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 data class ExpressionResult (
 	var name: String,
-	var icon: Drawable,
+	var icon: Drawable?,
 	var meta: String?,
 )
 
@@ -43,13 +44,14 @@ fun ExpressionResultsList(results: List<ExpressionResult>) {
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ExpressionResultListItem(result: ExpressionResult) {
-	Row(modifier = Modifier.padding(0.dp), verticalAlignment = Alignment.CenterVertically) {
-		Image(
-			result.icon.toBitmap(config = Bitmap.Config.ARGB_8888).asImageBitmap()
-			, contentDescription = "Image", modifier = Modifier
-				.size(50.dp)
+	Row(modifier = Modifier.padding(0.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+		result.icon?.toBitmap(config = Bitmap.Config.ARGB_8888)?.let {
+			Image(
+				it.asImageBitmap(), contentDescription = "Image", modifier = Modifier
+					.size(50.dp)
 
-		)
+			)
+		}
 		Text(result.name)
 	}
 }
@@ -59,7 +61,7 @@ fun ExpressionResultListItem(result: ExpressionResult) {
 fun PreviewExpressionResultListItem() {
 	val result = ExpressionResult(
 		"Test 1",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)!!,
+		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
 		null
 	)
 
@@ -71,15 +73,15 @@ fun PreviewExpressionResultListItem() {
 fun PreviewExpressionResultsList() {
 	val results = listOf(ExpressionResult(
 		"Test 1",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)!!,
+		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
 		null
 		),ExpressionResult(
 		"Test 2",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)!!,
+		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
 		null
 	),ExpressionResult(
 		"Test 3",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground)!!,
+		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
 		null
 	))
 	ExpressionResultsList(results = results)
