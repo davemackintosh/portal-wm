@@ -1,0 +1,103 @@
+{
+  "name": "container",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "wq0yk1g4DJkR7nRTAGe2sA",
+    "node": "103:160",
+    "version": "4524157586",
+    "component-id": "825528f13b2c7954d51f54bab16c13076f906ebf"
+  },
+  "default": "Container",
+  "documentation": "Entire UI",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      }
+    ],
+    "modes": {
+      "Container": {
+        "rules": [
+          {
+            "id": "top_level",
+            "border-radius": "15.0",
+            "drop-shadow": {
+              "color": {
+                "alpha": "0.4588235294117647",
+                "hue": "0.0",
+                "saturation": "0.0",
+                "value": "0.0"
+              },
+              "blur": "60.0",
+              "offset-x": "0.0",
+              "offset-y": "24.0",
+              "spread": "0.0",
+              "blend-mode": "normal"
+            },
+            "is-structured": "false",
+            "children": "$Container children",
+            "background-color": {
+              "alpha": "0.6",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.09411764705882353"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "Container children": {
+      "data-type": "list-item",
+      "required": false,
+      "description": ""
+    }
+  },
+  "previews": [
+    {
+      "design": "Container",
+      "size": {
+        "width": 1162.0,
+        "height": 627.0
+      },
+      "parameters": {
+        "Container children": [
+          {
+            "type": "text",
+            "opacity": 0.5,
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": 24.0
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": 30.0
+              }
+            },
+            "font-weight": 510.0,
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.9490196078431372"
+            },
+            "text-content": "Search for apps and commands…",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": 27.0,
+            "line-height": 1.193359375,
+            "typeface": "SF Pro"
+          }
+        ]
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}
