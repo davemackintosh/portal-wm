@@ -1,5 +1,7 @@
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +27,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -36,35 +39,23 @@ fun App() {
     val context = LocalContext.current
     val backgroundColour = Color(1.0f, 1.0f, 1.0f, 0.6f)
     val boxStyles =
-            Modifier.padding(16.dp)
-                    .background(color = backgroundColour, shape = RoundedCornerShape(16.dp))
+        Modifier
+            .padding(16.dp)
+            .background(color = backgroundColour, shape = RoundedCornerShape(16.dp))
 
     val pm = context.packageManager
-    val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-    val apps =
-            packages.map { it ->
-                Pair(it, pm.getResourcesForApplication(it))
-                //    val appName =
-                //            if (resolveInfo.activityInfo.labelRes != 0) {
-                //                // getting proper label from resources
-                //                resources.getString(resolveInfo.activityInfo.labelRes)
-                //            } else {
-                //                // getting it out of app info - equivalent to
-                //                // context.packageManager.getApplicationInfo
-                //                resolveInfo.activityInfo.applicationInfo.loadLabel(pm).toString()
-                //            }
-                //    val packageName = resolveInfo.activityInfo.packageName
-                //    val iconDrawable = resovleInfo.activityInfo.loadIcon(pm)
-            }
-    val mainIntent = Intent(Intent.ACTION_MAIN, null)
-    mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+    val intent = Intent(Intent.ACTION_MAIN, null)
+    intent.addCategory(Intent.CATEGORY_LAUNCHER)
+    val appList: List<ResolveInfo> = pm.queryIntentActivities(
+        intent,
+        0
+    )
+    val apps = appList.map { app -> ExpressionResult(
+        app.loadLabel(pm).toString(),
+        app.icon,
+        null
 
-    //    val resolvedInfos =
-    //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-    //                pm.queryIntentActivities(mainIntent, PackageManager.ResolveInfoFlags.of(0L))
-    //            } else {
-    //                pm.queryIntentActivities(mainIntent, 0)
-    //            }
+    )}
 
     MaterialTheme {
         Column(
@@ -79,19 +70,19 @@ fun App() {
                             onValueChange = { inputExpression = it },
                             label = { Text("Enter expression") },
                             maxLines = 1,
-                            modifier = Modifier.padding(20.dp).focusRequester(focusRequester)
+                            modifier = Modifier
+                                .padding(20.dp)
+                                .focusRequester(focusRequester)
                     )
                 }
             }
-            LazyVerticalGrid(columns = GridCells.Fixed(3)) {
-                items(apps) {
-                    if (it.first.labelRes != 0) {
-                        Text(stringResource(it.first.labelRes))
-                    } else {
-                        Text(it.first.loadLabel(pm).toString())
-                    }
-                }
-            }
         }
+        ExpressionResultsList(results = apps)
     }
+}
+
+@Preview
+@Composable
+fun AppPreview() {
+    App()
 }
