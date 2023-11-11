@@ -32,7 +32,7 @@ fun ExpressionInput() {
 		),
 		maxLines = 1,
 		modifier = Modifier
-			.padding(20.dp)
+			.padding(16.dp)
 			.focusRequester(focusRequester)
 			.fillMaxWidth()
 	)

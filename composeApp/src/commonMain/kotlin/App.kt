@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun App() {
+	var selectedIndex = 0
 	val context = LocalContext.current
 	val pm = context.packageManager
 	val intent = Intent(Intent.ACTION_MAIN, null)
@@ -45,7 +46,8 @@ fun App() {
 		Container {
 			Column {
 				ExpressionInput()
-				ExpressionResultsList(results = apps)
+				ExpressionResultsList(results = apps, selectedIndex = selectedIndex)
+				apps[selectedIndex].type?.let { Footer(it) }
 			}
 		}
 	}
