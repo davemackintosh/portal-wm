@@ -1,58 +1,114 @@
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getDrawable
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import co.dav3.desk.R
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-data class ExpressionResult (
+enum class ExpressionResultType {
+	APP, MATHEMATICAL, TERMUX_COMMAND
+}
+
+data class ExpressionResult(
 	var name: String,
 	var icon: Drawable?,
 	var meta: String?,
+	var type: ExpressionResultType? = ExpressionResultType.APP
 )
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
-fun ExpressionResultsList(results: List<ExpressionResult>) {
-	LazyColumn {
-		items(results) { result ->
-			ExpressionResultListItem(result = result)
+fun ExpressionResultsList(results: List<ExpressionResult>, selectedIndex: Int = 0) {
+	LazyColumn(
+		modifier = Modifier.fillMaxWidth()
+	) {
+		itemsIndexed(results) { index, result ->
+			ExpressionResultListItem(result = result, highlighted = selectedIndex == index)
 		}
 	}
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
-fun ExpressionResultListItem(result: ExpressionResult) {
-	Row(modifier = Modifier.padding(0.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-		result.icon?.toBitmap(config = Bitmap.Config.ARGB_8888)?.let {
-			Image(
-				it.asImageBitmap(), contentDescription = "Image", modifier = Modifier
-					.size(50.dp)
-
+fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = false) {
+	Row(
+		modifier = Modifier
+			.padding(
+				horizontal = if (highlighted) {
+					0.dp
+				} else {
+					8.dp
+				}, vertical = 8.dp
 			)
+			.fillMaxWidth()
+			.background(
+				color = if (highlighted) {
+					Color(1f, 1f, 1f, 0.25f)
+				} else {
+					Color.Transparent
+				}, shape = RoundedCornerShape(6.dp)
+			), verticalAlignment = Alignment.CenterVertically
+	) {
+		result.icon?.toBitmap(config = Bitmap.Config.ARGB_8888)?.let {
+			Column {
+				Image(
+					it.asImageBitmap(),
+					contentDescription = "Image",
+					modifier = Modifier.size(50.dp)
+
+				)
+			}
 		}
-		Text(result.name)
+		Column(
+			modifier = Modifier
+				.fillMaxWidth()
+				.padding(start = 0.dp, top = 0.dp, bottom = 0.dp, end = 8.dp)
+		) {
+			Row {
+				Text(
+					result.name,
+					color = Color.White,
+					fontSize = 18.0.sp,
+					fontWeight = FontWeight.Medium
+				)
+				result.meta?.let {
+					Text(
+						it,
+						color = Color(1f, 1f, 1f, 0.6f),
+						fontSize = 18.0.sp,
+						fontWeight = FontWeight.Medium
+					)
+				}
+				result.type?.let {
+					Text(
+						it.name.lowercase().replaceFirstChar(Char::titlecase),
+						color = Color(1f, 1f, 1f, 0.6f),
+						fontSize = 18.0.sp,
+						fontWeight = FontWeight.Medium,
+						textAlign = TextAlign.End,
+						modifier = Modifier.fillMaxWidth()
+					)
+				}
+			}
+		}
 	}
 }
 
@@ -60,8 +116,9 @@ fun ExpressionResultListItem(result: ExpressionResult) {
 @Composable
 fun PreviewExpressionResultListItem() {
 	val result = ExpressionResult(
-		"Test 1",
+		"Toggle System Appearance",
 		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
+		null,
 		null
 	)
 
@@ -71,18 +128,20 @@ fun PreviewExpressionResultListItem() {
 @Preview
 @Composable
 fun PreviewExpressionResultsList() {
-	val results = listOf(ExpressionResult(
-		"Test 1",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
-		null
-		),ExpressionResult(
-		"Test 2",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
-		null
-	),ExpressionResult(
-		"Test 3",
-		LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
-		null
-	))
+	val results = listOf(
+		ExpressionResult(
+			"Toggle System Appearance",
+			LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
+			null,
+			ExpressionResultType.APP
+		), ExpressionResult(
+			"Test 2", null, null, null
+		), ExpressionResult(
+			"Test 3",
+			LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
+			null,
+			null
+		)
+	)
 	ExpressionResultsList(results = results)
 }
