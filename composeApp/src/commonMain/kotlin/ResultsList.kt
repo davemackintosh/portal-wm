@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,8 +31,8 @@ enum class ExpressionResultType {
 
 data class ExpressionResult(
 	var name: String,
-	var icon: Drawable?,
-	var meta: String?,
+	var icon: Drawable? = null,
+	var meta: String? = null,
 	var type: ExpressionResultType? = ExpressionResultType.APP
 )
 
@@ -51,36 +51,28 @@ fun ExpressionResultsList(results: List<ExpressionResult>, selectedIndex: Int = 
 fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = false) {
 	Row(
 		modifier = Modifier
-			.padding(
-				horizontal = if (highlighted) {
-					0.dp
-				} else {
-					8.dp
-				}, vertical = 8.dp
-			)
-			.fillMaxWidth()
 			.background(
 				color = if (highlighted) {
 					Color(1f, 1f, 1f, 0.25f)
 				} else {
 					Color.Transparent
 				}, shape = RoundedCornerShape(6.dp)
-			), verticalAlignment = Alignment.CenterVertically
+			)
+			.padding(16.dp)
+			.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
 	) {
 		result.icon?.toBitmap(config = Bitmap.Config.ARGB_8888)?.let {
-			Column {
-				Image(
-					it.asImageBitmap(),
-					contentDescription = "Image",
-					modifier = Modifier.size(50.dp)
-
-				)
-			}
+			Image(
+				it.asImageBitmap(),
+				contentDescription = "Image",
+				Modifier
+					.width(18.dp)
+			)
 		}
 		Column(
 			modifier = Modifier
 				.fillMaxWidth()
-				.padding(start = 0.dp, top = 0.dp, bottom = 0.dp, end = 8.dp)
+				.padding(start = 16.dp, top = 0.dp, bottom = 0.dp, end = 8.dp)
 		) {
 			Row {
 				Text(
@@ -122,7 +114,9 @@ fun PreviewExpressionResultListItem() {
 		null
 	)
 
-	ExpressionResultListItem(result = result)
+	DeskTheme {
+		ExpressionResultListItem(result = result)
+	}
 }
 
 @Preview
@@ -143,5 +137,7 @@ fun PreviewExpressionResultsList() {
 			null
 		)
 	)
-	ExpressionResultsList(results = results)
+	DeskTheme {
+		ExpressionResultsList(results = results)
+	}
 }
