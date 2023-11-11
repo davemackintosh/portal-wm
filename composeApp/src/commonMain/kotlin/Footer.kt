@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.materialIcon
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
@@ -23,6 +21,8 @@ fun getTextFromType(type: ExpressionResultType): String {
 		ExpressionResultType.APP -> "Open app"
 		ExpressionResultType.MATHEMATICAL -> "Copy result"
 		ExpressionResultType.TERMUX_COMMAND -> "Execute in Termux"
+		ExpressionResultType.ASSISTANT -> "Ask assistant"
+		ExpressionResultType.VISUAL_MEDIA -> "Open media"
 	}
 }
 

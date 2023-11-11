@@ -27,7 +27,7 @@ import androidx.core.graphics.drawable.toBitmap
 import co.dav3.desk.R
 
 enum class ExpressionResultType {
-	APP, MATHEMATICAL, TERMUX_COMMAND
+	APP, MATHEMATICAL, TERMUX_COMMAND, VISUAL_MEDIA, ASSISTANT
 }
 
 data class ExpressionResult(
