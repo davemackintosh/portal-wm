@@ -10,13 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
 	val context = LocalContext.current
-
 	val pm = context.packageManager
 	val intent = Intent(Intent.ACTION_MAIN, null)
 	intent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -40,14 +37,16 @@ fun App() {
 		)
 	}
 
-	DeskTheme {
-		Column(
-			modifier = Modifier.fillMaxSize(),
-			verticalArrangement = Arrangement.Center,
-			horizontalAlignment = Alignment.CenterHorizontally
-		) {
-			ExpressionInput()
-			ExpressionResultsList(results = apps)
+	Column(
+		modifier = Modifier.fillMaxSize(),
+		verticalArrangement = Arrangement.Center,
+		horizontalAlignment = Alignment.CenterHorizontally
+	) {
+		Container {
+			Column {
+				ExpressionInput()
+				ExpressionResultsList(results = apps)
+			}
 		}
 	}
 }

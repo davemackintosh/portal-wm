@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +54,7 @@ fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = fa
 		modifier = Modifier
 			.background(
 				color = if (highlighted) {
-					Color(1f, 1f, 1f, 0.25f)
+					MaterialTheme.colorScheme.onBackground.copy(alpha = 0.25f)
 				} else {
 					Color.Transparent
 				}, shape = RoundedCornerShape(6.dp)
@@ -75,16 +76,17 @@ fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = fa
 				.padding(start = 16.dp, top = 0.dp, bottom = 0.dp, end = 8.dp)
 		) {
 			Row {
+				print(MaterialTheme.colorScheme.onBackground)
 				Text(
 					result.name,
-					color = Color.White,
+					color = MaterialTheme.colorScheme.onBackground,
 					fontSize = 18.0.sp,
 					fontWeight = FontWeight.Medium
 				)
 				result.meta?.let {
 					Text(
 						it,
-						color = Color(1f, 1f, 1f, 0.6f),
+						color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
 						fontSize = 18.0.sp,
 						fontWeight = FontWeight.Medium
 					)
@@ -92,7 +94,7 @@ fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = fa
 				result.type?.let {
 					Text(
 						it.name.lowercase().replaceFirstChar(Char::titlecase),
-						color = Color(1f, 1f, 1f, 0.6f),
+						color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
 						fontSize = 18.0.sp,
 						fontWeight = FontWeight.Medium,
 						textAlign = TextAlign.End,

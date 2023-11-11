@@ -1,6 +1,7 @@
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -21,11 +23,18 @@ fun ExpressionInput() {
 	TextField(
 		value = inputExpression,
 		onValueChange = { inputExpression = it },
-		label = { Text("Enter expression") },
+		label = null,
+		colors = TextFieldDefaults.colors(
+			focusedContainerColor = Color.Transparent,
+			unfocusedContainerColor = Color.Transparent,
+			focusedIndicatorColor = Color.Transparent,
+			unfocusedIndicatorColor = Color.Transparent,
+		),
 		maxLines = 1,
 		modifier = Modifier
 			.padding(20.dp)
 			.focusRequester(focusRequester)
+			.fillMaxWidth()
 	)
 
 	LaunchedEffect(Unit) {
@@ -36,7 +45,10 @@ fun ExpressionInput() {
 @Preview
 @Composable
 fun PreviewExpressionInput() {
-	DeskTheme {
+	DeskTheme(darkTheme = false) {
+		ExpressionInput()
+	}
+	DeskTheme(darkTheme = true) {
 		ExpressionInput()
 	}
 }
