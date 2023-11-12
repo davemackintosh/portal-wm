@@ -17,27 +17,26 @@ data class ExpressionResult(
 	var type: ExpressionResultType? = ExpressionResultType.APP
 )
 
-data class ExpressionResultState(
-	var expression: String? = null,
+data class ExpressionState(
+	var expression: String = "",
 	var selectedIndex: Int = 0,
-	var results: MutableMap<ExpressionResultType, List<ExpressionResult>> = mutableMapOf()
-
 ) {
 	fun getCurrentlySelected(): ExpressionResult? {
-		val keysAsList = results.keys.toList()
-		val keyIndex = selectedIndex % keysAsList.size
-		val keyAtIndex = keysAsList[keyIndex]
-		val listAtIndex = results[keyAtIndex]
-
-		return if (listAtIndex != null) {
-			val itemIndex = selectedIndex / keysAsList.size
-			if (itemIndex < listAtIndex.size) {
-				listAtIndex[itemIndex]
-			} else {
-				null
-			}
-		} else {
-			null
-		}
+		return null
+//		val keysAsList = results.keys.toList()
+//		val keyIndex = selectedIndex % keysAsList.size
+//		val keyAtIndex = keysAsList[keyIndex]
+//		val listAtIndex = results[keyAtIndex]
+//
+//		return if (listAtIndex != null) {
+//			val itemIndex = selectedIndex / keysAsList.size
+//			if (itemIndex < listAtIndex.size) {
+//				listAtIndex[itemIndex]
+//			} else {
+//				null
+//			}
+//		} else {
+//			null
+//		}
 	}
 }

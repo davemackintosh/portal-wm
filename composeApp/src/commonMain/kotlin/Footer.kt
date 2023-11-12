@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
-import co.dav3.desk.ExpressionResultState
+import co.dav3.desk.ExpressionState
 import co.dav3.desk.ExpressionResultType
 
 fun getTextFromType(type: ExpressionResultType?): String {
@@ -30,7 +30,7 @@ fun getTextFromType(type: ExpressionResultType?): String {
 }
 
 @Composable
-fun Footer(resultSet: ExpressionResultState) {
+fun Footer(resultSet: ExpressionState) {
 	val selectedItem = resultSet.getCurrentlySelected()
 	Row(
 		modifier = Modifier

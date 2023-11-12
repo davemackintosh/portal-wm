@@ -4,28 +4,27 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.unit.dp
-import co.dav3.desk.ExpressionResultState
+import co.dav3.desk.ExpressionState
 
 @Composable
-fun ExpressionInput(resultSet: ExpressionResultState) {
-	var inputExpression by remember { mutableStateOf("") }
+fun ExpressionInput(
+	expressionState: ExpressionState,
+	onValueChange: (String) -> Unit,
+	onKeyEvent: (KeyEvent) -> Boolean
+) {
 	val focusRequester = remember { FocusRequester() }
 
 	TextField(
-		value = inputExpression,
-		onValueChange = {
-			inputExpression = it
-			resultSet.expression = it
-		},
+		value = expressionState.expression,
+		onValueChange = { value -> onValueChange(value) },
 		label = null,
 		colors = TextFieldDefaults.colors(
 			focusedContainerColor = Color.Transparent,
@@ -38,6 +37,7 @@ fun ExpressionInput(resultSet: ExpressionResultState) {
 			.padding(8.dp)
 			.focusRequester(focusRequester)
 			.fillMaxWidth()
+			.onKeyEvent { onKeyEvent(it) }
 	)
 
 	LaunchedEffect(Unit) {

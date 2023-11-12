@@ -22,9 +22,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import co.dav3.desk.ExpressionResult
-import co.dav3.desk.ExpressionResultState
+import co.dav3.desk.ExpressionState
 import co.dav3.desk.ExpressionResultType
 import co.dav3.desk.R
+import ports.ResultsPort
+
+@Composable
+fun ExpressionResultsList(expressionState: ExpressionState, resultsAdapters: List<ResultsPort>) {
+	Column(
+		modifier = Modifier.fillMaxWidth()
+	) {
+		for (adapter in resultsAdapters) {
+			ExpressionResultGroup(
+				resultPair = Pair(adapter.getCategory(), adapter.getResults(expressionState)),
+				selectedIndex = expressionState.selectedIndex
+			)
+		}
+	}
+}
 
 @Composable
 fun ExpressionResultGroup(
@@ -38,19 +53,6 @@ fun ExpressionResultGroup(
 	)
 	for ((index, result) in resultPair.second.withIndex()) {
 		ExpressionResultListItem(result, selectedIndex == index)
-	}
-}
-
-@Composable
-fun ExpressionResultsList(resultSet: ExpressionResultState) {
-	Column(
-		modifier = Modifier.fillMaxWidth()
-	) {
-		for (resultPair in resultSet.results.toList()) {
-			ExpressionResultGroup(
-				resultPair = resultPair, selectedIndex = resultSet.selectedIndex
-			)
-		}
 	}
 }
 
