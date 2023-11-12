@@ -24,26 +24,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
+import co.dav3.desk.ExpressionResult
+import co.dav3.desk.ExpressionResultType
 import co.dav3.desk.R
-
-enum class ExpressionResultType {
-	APP, MATHEMATICAL, TERMUX_COMMAND, VISUAL_MEDIA, ASSISTANT
-}
-
-data class ExpressionResult(
-	var name: String,
-	var icon: Drawable? = null,
-	var meta: String? = null,
-	var type: ExpressionResultType? = ExpressionResultType.APP
-)
+import co.dav3.desk.ResultSet
 
 @Composable
-fun ExpressionResultsList(results: List<ExpressionResult>, selectedIndex: Int = 0) {
+fun ExpressionResultsList(resultSet: ResultSet) {
 	LazyColumn(
 		modifier = Modifier.fillMaxWidth()
 	) {
-		itemsIndexed(results) { index, result ->
-			ExpressionResultListItem(result = result, highlighted = selectedIndex == index)
+		itemsIndexed(resultSet.results.toList()) { _, resultPair ->
+			Text(resultPair.first.value)
+			LazyColumn {
+				itemsIndexed(resultPair.second) {index, result ->
+					ExpressionResultListItem(result, resultSet.selectedIndex == index)
+				}
+			}
 		}
 	}
 }
@@ -121,25 +118,25 @@ fun PreviewExpressionResultListItem() {
 	}
 }
 
-@Preview
-@Composable
-fun PreviewExpressionResultsList() {
-	val results = listOf(
-		ExpressionResult(
-			"Toggle System Appearance",
-			LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
-			null,
-			ExpressionResultType.APP
-		), ExpressionResult(
-			"Test 2", null, null, null
-		), ExpressionResult(
-			"Test 3",
-			LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
-			null,
-			null
-		)
-	)
-	DeskTheme {
-		ExpressionResultsList(results = results)
-	}
-}
+//@Preview
+//@Composable
+//fun PreviewExpressionResultsList() {
+//	val results = listOf(
+//		ExpressionResult(
+//			"Toggle System Appearance",
+//			LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
+//			null,
+//			ExpressionResultType.APP
+//		), ExpressionResult(
+//			"Test 2", null, null, null
+//		), ExpressionResult(
+//			"Test 3",
+//			LocalContext.current.getDrawable(R.drawable.ic_launcher_foreground),
+//			null,
+//			null
+//		)
+//	)
+//	DeskTheme {
+//		ExpressionResultsList(results = results)
+//	}
+//}

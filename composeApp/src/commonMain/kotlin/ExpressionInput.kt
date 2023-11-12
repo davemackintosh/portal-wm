@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import co.dav3.desk.ResultSet
 
 @Composable
-fun ExpressionInput() {
+fun ExpressionInput(resultSet: ResultSet) {
 	var inputExpression by remember { mutableStateOf("") }
 	val focusRequester = remember { FocusRequester() }
 
@@ -32,7 +32,7 @@ fun ExpressionInput() {
 		),
 		maxLines = 1,
 		modifier = Modifier
-			.padding(16.dp)
+			.padding(8.dp)
 			.focusRequester(focusRequester)
 			.fillMaxWidth()
 	)
@@ -42,13 +42,13 @@ fun ExpressionInput() {
 	}
 }
 
-@Preview
-@Composable
-fun PreviewExpressionInput() {
-	DeskTheme(darkTheme = false) {
-		ExpressionInput()
-	}
-	DeskTheme(darkTheme = true) {
-		ExpressionInput()
-	}
-}
+//@Preview
+//@Composable
+//fun PreviewExpressionInput() {
+//	DeskTheme(darkTheme = false) {
+//		ExpressionInput()
+//	}
+//	DeskTheme(darkTheme = true) {
+//		ExpressionInput()
+//	}
+//}

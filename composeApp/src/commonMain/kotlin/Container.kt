@@ -1,6 +1,7 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +18,7 @@ fun Container(content: @Composable () -> Unit) {
 		0.5f to Color.Transparent,
 		1f to Color.White.copy(alpha = 0.1f)
 	)
-	Box(
+	Column(
 		modifier = Modifier
 			.fillMaxWidth()
 			.background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.75f))

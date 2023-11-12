@@ -15,19 +15,23 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
+import co.dav3.desk.ExpressionResultType
+import co.dav3.desk.ResultSet
 
-fun getTextFromType(type: ExpressionResultType): String {
+fun getTextFromType(type: ExpressionResultType?): String {
 	return when (type) {
 		ExpressionResultType.APP -> "Open app"
 		ExpressionResultType.MATHEMATICAL -> "Copy result"
 		ExpressionResultType.TERMUX_COMMAND -> "Execute in Termux"
 		ExpressionResultType.ASSISTANT -> "Ask assistant"
 		ExpressionResultType.VISUAL_MEDIA -> "Open media"
+		else -> ""
 	}
 }
 
 @Composable
-fun Footer(selectedMode: ExpressionResultType) {
+fun Footer(resultSet: ResultSet) {
+	val selectedItem = resultSet.getCurrentlyHighlighted()
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -43,15 +47,17 @@ fun Footer(selectedMode: ExpressionResultType) {
 			.padding(horizontal = 16.0.dp, vertical = 8.0.dp),
 		horizontalArrangement = Arrangement.End
 	) {
-		Text(
-			getTextFromType(selectedMode),
-			color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),
-			textAlign = TextAlign.Center
-		)
-		Icon(
-			Icons.Filled.ArrowForward,
-			contentDescription = getTextFromType(selectedMode),
-			tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f)
-		)
+		if (selectedItem != null) {
+			Text(
+				getTextFromType(selectedItem.type),
+				color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),
+				textAlign = TextAlign.Center
+			)
+			Icon(
+				Icons.Filled.ArrowForward,
+				contentDescription = getTextFromType(selectedItem.type),
+				tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f)
+			)
+		}
 	}
 }
