@@ -1,5 +1,4 @@
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -7,8 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,22 +22,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import co.dav3.desk.ExpressionResult
+import co.dav3.desk.ExpressionResultState
 import co.dav3.desk.ExpressionResultType
 import co.dav3.desk.R
-import co.dav3.desk.ResultSet
 
 @Composable
-fun ExpressionResultsList(resultSet: ResultSet) {
-	LazyColumn(
+fun ExpressionResultGroup(
+	resultPair: Pair<ExpressionResultType, List<ExpressionResult>>, selectedIndex: Int
+) {
+	Text(
+		resultPair.first.value,
+		color = MaterialTheme.colorScheme.onBackground,
+		fontWeight = FontWeight.Medium,
+		modifier = Modifier.padding(8.dp)
+	)
+	for ((index, result) in resultPair.second.withIndex()) {
+		ExpressionResultListItem(result, selectedIndex == index)
+	}
+}
+
+@Composable
+fun ExpressionResultsList(resultSet: ExpressionResultState) {
+	Column(
 		modifier = Modifier.fillMaxWidth()
 	) {
-		itemsIndexed(resultSet.results.toList()) { _, resultPair ->
-			Text(resultPair.first.value)
-			LazyColumn {
-				itemsIndexed(resultPair.second) {index, result ->
-					ExpressionResultListItem(result, resultSet.selectedIndex == index)
-				}
-			}
+		for (resultPair in resultSet.results.toList()) {
+			ExpressionResultGroup(
+				resultPair = resultPair, selectedIndex = resultSet.selectedIndex
+			)
 		}
 	}
 }
@@ -61,10 +70,7 @@ fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = fa
 	) {
 		result.icon?.toBitmap(config = Bitmap.Config.ARGB_8888)?.let {
 			Image(
-				it.asImageBitmap(),
-				contentDescription = "Image",
-				Modifier
-					.width(18.dp)
+				it.asImageBitmap(), contentDescription = "Image", Modifier.width(18.dp)
 			)
 		}
 		Column(
@@ -73,7 +79,6 @@ fun ExpressionResultListItem(result: ExpressionResult, highlighted: Boolean = fa
 				.padding(start = 16.dp, top = 0.dp, bottom = 0.dp, end = 8.dp)
 		) {
 			Row {
-				print(MaterialTheme.colorScheme.onBackground)
 				Text(
 					result.name,
 					color = MaterialTheme.colorScheme.onBackground,

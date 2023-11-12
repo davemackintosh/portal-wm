@@ -13,16 +13,19 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import co.dav3.desk.ResultSet
+import co.dav3.desk.ExpressionResultState
 
 @Composable
-fun ExpressionInput(resultSet: ResultSet) {
+fun ExpressionInput(resultSet: ExpressionResultState) {
 	var inputExpression by remember { mutableStateOf("") }
 	val focusRequester = remember { FocusRequester() }
 
 	TextField(
 		value = inputExpression,
-		onValueChange = { inputExpression = it },
+		onValueChange = {
+			inputExpression = it
+			resultSet.expression = it
+		},
 		label = null,
 		colors = TextFieldDefaults.colors(
 			focusedContainerColor = Color.Transparent,

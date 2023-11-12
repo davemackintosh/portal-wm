@@ -1,4 +1,3 @@
-import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
@@ -7,10 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
@@ -26,7 +21,11 @@ import co.dav3.desk.ExpressionResultType
 
 @Composable
 fun App() {
-	var expressionResult = ExpressionResultState()
+	val expressionResult = ExpressionResultState()
+
+	fun setResultsForCategory(category: ExpressionResultType, results: List<ExpressionResult>) {
+		expressionResult.results[category] = results
+	}
 
 	fun handleSelectedIndexChange(difference: Int) {
 		var newIndex = expressionResult.selectedIndex + difference
@@ -75,13 +74,13 @@ fun App() {
 			)
 		}
 	if (appList.isNotEmpty()) {
-		setResults(
+		setResultsForCategory(
 			category = ExpressionResultType.APP,
 			results = appList.map { app ->
 				ExpressionResult(
 					app.loadLabel(pm).toString(),
 					app.activityInfo.applicationInfo.loadIcon(pm),
-					app.activityInfo.targetActivity,
+					app.activityInfo.splitName,
 					ExpressionResultType.APP
 				)
 			}

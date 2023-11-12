@@ -1,9 +1,10 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,8 +23,13 @@ fun Container(content: @Composable () -> Unit) {
 		modifier = Modifier
 			.fillMaxWidth()
 			.background(color = MaterialTheme.colorScheme.background.copy(alpha = 0.75f))
-			.border(width = 1.0.dp, brush = Brush.horizontalGradient(colorStops = colorStops), shape = RoundedCornerShape(8.dp))
+			.border(
+				width = 1.0.dp,
+				brush = Brush.horizontalGradient(colorStops = colorStops),
+				shape = RoundedCornerShape(8.dp)
+			)
+			.verticalScroll(rememberScrollState())
 	) {
-			content()
+		content()
 	}
 }
