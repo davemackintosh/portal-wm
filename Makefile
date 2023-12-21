@@ -7,6 +7,7 @@ termux-deps:
 	unzip android-sdk-aarch64.zip -d $$PREFIX/share
 	@echo "Android SDK installed to $$PREFIX/share/android-sdk"
 	direnv allow
+	sdkmanager "platform-tools" "platforms;android-33"
 	rm -f android-sdk-aarch64.zip*
 
 .PHONY: termux-ubuntu-deps
